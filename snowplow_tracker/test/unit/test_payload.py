@@ -71,11 +71,17 @@ class TestPayload(unittest.TestCase):
         p = payload.Payload()
         p.add_json({"name5": 5, "name6": 6}, True, "Encoded_type", "Not_encoded_type")
         output = {'Encoded_type': 'eyJuYW1lNiI6IDYsICJuYW1lNSI6IDV9'}
-        self.assertTrue(output == p.nv_pairs)
+        self.assertDictEqual(output, p.nv_pairs)
 
     def test_add_json_not_encode_base64(self):
         p = payload.Payload()
         p.add_json({"name7": 7, "name8": 8}, False, "Encoded_type", "Not_encoded_type")
         output = {'Not_encoded_type': '{"name7": 7, "name8": 8}'}
-        self.assertTrue(output == p.nv_pairs)
+        self.assertDictEqual(output, p.nv_pairs)
+
+    def test_add_json_with_emoji(self):
+        p = payload.Payload()
+        p.add_json({"name9": "\xF0\x9F\x98\x82", "name10": 10}, True, "Encoded_type", "Not_encoded_type")
+        output = {'Encoded_type': 'eyJuYW1lMTAiOiAxMCwgIm5hbWU5IjogIvCfmIIifQ=='}
+        self.assertDictEqual(output, p.nv_pairs)
 
