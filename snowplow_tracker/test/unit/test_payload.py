@@ -21,8 +21,6 @@
 
 
 import unittest
-import json
-import base64
 from snowplow_tracker import payload
 
 
