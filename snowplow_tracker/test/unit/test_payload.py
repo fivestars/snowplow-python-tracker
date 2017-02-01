@@ -21,6 +21,8 @@
 
 
 import unittest
+import json
+import base64
 from snowplow_tracker import payload
 
 
@@ -66,3 +68,16 @@ class TestPayload(unittest.TestCase):
         p.add_dict({"name4": 4, "name3": 3})            # Order doesn't matter
         output = {"n1": "v1", "n2": "v2", "name3": 3, "name4": 4}
         self.assertTrue(is_subset(output, p.nv_pairs))
+
+    def test_add_json_encode_base64(self):
+        p = payload.Payload()
+        p.add_json({"name5": 5, "name6": 6}, True, "Encoded_type", "Not_encoded_type")
+        output = {'Encoded_type': 'eyJuYW1lNiI6IDYsICJuYW1lNSI6IDV9'}
+        self.assertTrue(output == p.nv_pairs)
+
+    def test_add_json_not_encode_base64(self):
+        p = payload.Payload()
+        p.add_json({"name7": 7, "name8": 8}, False, "Encoded_type", "Not_encoded_type")
+        output = {'Not_encoded_type': '{"name7": 7, "name8": 8}'}
+        self.assertTrue(output == p.nv_pairs)
+
