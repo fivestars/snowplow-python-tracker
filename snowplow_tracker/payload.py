@@ -85,7 +85,7 @@ class Payload:
                     if not isinstance(encoded_dict, str):
                         encoded_dict = encoded_dict.decode("utf-8")
                 except UnicodeEncodeError:
-                    encoded_dict = encoded_dict.decode("utf-8")
+                    encoded_dict = json_dict.decode("utf-8")
                 self.add(type_when_encoded, encoded_dict)
             else:
                 self.add(type_when_not_encoded, json_dict)
